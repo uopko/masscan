@@ -1,0 +1,18 @@
+name: Masscan
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Compile
+        run: |
+          cd vs10
+          msbuild masscan.sln /p:Configuration=Release
+      - name: Run
+        run: |
+          cd bin
+          masscan.exe -p 1-65535 10.249.0.0/24 --rate=10000
